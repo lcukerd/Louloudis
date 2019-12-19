@@ -25,6 +25,33 @@ def findValueofcell(line, centroids, lpos):
             ntemp +=1
     return ntemp
 
+def findbelongCC(line, centroidsP, centroids, mapP):
+    x1, x2, y1, y2 = findLine(line[0]-5, line[1]);
+    x3, x4, y3, y4 = findLine(line[0]+5, line[1]);
+    vertices = [(x1,y1), (x2,y2), (x4,y4), (x3,y3)];
+    rect = Polygon(vertices[0], vertices[1], vertices[2], vertices[3]);
+    value = np.zeros((len(centroids)));
+    for i in range(len(centroidsP)):
+        centroid = centroidsP[i];
+        if (rect.encloses_point(centroid)):
+            value[mapP[i]] += 1;
+        else:
+            value[mapP[i]] -= 1;
+    cc = [];
+    for i in range(len(centroids)):
+        if value[i] >= 0:
+            cc.append(i);
+    return cc
+
+def discardPartition(line, centroidsP, centroids, mapP):
+    cc = findbelongCC(line, centroidsP, centroids, mapP);
+    count = 0;
+    for i in range(len(centroidsP)):
+        if mapP[i] in cc:
+            centroidsP[i] = (-1,-1);
+            count += 1;
+    return centroidsP, count
+
 def findLine(rho, theta):
     a = math.cos(theta)
     b = math.sin(theta)

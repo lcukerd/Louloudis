@@ -36,7 +36,9 @@ def divide(centroids, stats, ah):
 
 def partitionCC(stats, aw):
     centroids = [];
-    for stat in stats:
+    mapP = [];
+    for pos in range(len(stats)):
+        stat = stats[pos];
         l = stat[cv.CC_STAT_LEFT];
         t = stat[cv.CC_STAT_TOP];
         h = stat[cv.CC_STAT_HEIGHT];
@@ -44,7 +46,8 @@ def partitionCC(stats, aw):
             end = i*aw if i*aw < stat[cv.CC_STAT_WIDTH] else stat[cv.CC_STAT_WIDTH];
             polyCen = Polygon ((l, t), (l + end, t), (l + end, t + h), (l, t + h)).centroid;
             centroids.append((polyCen.x, polyCen.y));
-    return centroids;
+            mapP.append(pos);
+    return centroids, mapP;
 
 def findPrimaryCell(lines, centroids):
     n = 0

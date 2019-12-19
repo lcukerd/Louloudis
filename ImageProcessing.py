@@ -32,7 +32,7 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
             rho = lines[i][0][0]
             theta = lines[i][0][1]
             if math.degrees(theta) < 95 and math.degrees(theta) > 85:
-                nlines.append(lines);
+                nlines.append(lines[i]);
             else:
                 continue;
             a = math.cos(theta)
@@ -51,7 +51,7 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
     else:
         plt.imshow(outputImg)
     plt.show()
-    return lines;
+    return nlines;
 
 
 def houghDomainValidation(lines, centroids, avg_height):
