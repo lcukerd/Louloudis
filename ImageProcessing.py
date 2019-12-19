@@ -3,45 +3,38 @@ import numpy as np
 import math
 from matplotlib import pyplot as plt
 
-from Processing import *
-from ImageHandler import *
-from GeometryProcessing import *
-
 
 def findComponents(image):
     edgyImg = cv.Canny(image, 50, 200, None, 3)
     edgyColor = cv.cvtColor(edgyImg, cv.COLOR_GRAY2BGR)
-
-    DemoImg = np.zeros_like(edgyColor);
-
     num_labels, labels, stats, centroids = cv.connectedComponentsWithStats(edgyImg);
+
     avg_height = 0;
     for stat in stats:
         avg_height += stat[cv.CC_STAT_HEIGHT]
     avg_height /= num_labels
     print ("Found " + str(num_labels) + " components with height " + str(avg_height) + " in image")
 
-    if centroids is not None:
-        for centroid in centroids:
-            DemoImg[int(centroid[1]), int(centroid[0])] = [255,255,255]
-
-    plt.imshow(DemoImg)
-    plt.show()
-
-    return (labels, avg_height, centroids, DemoImg, stats)
+    return (labels, avg_height, centroids, stats)
 
 
 def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
     dst = cv.Canny(centroidImg, 50, 200, None, 3)
     cdst = cv.cvtColor(dst, cv.COLOR_GRAY2BGR)
 
-    lines = cv.HoughLines(dst, int(height), np.pi / 180, Threshold, None, n, m) #100
+    lines = cv.HoughLines(dst, int(0.2  * height), np.pi / 180, Threshold, None, n, m)
+
+    nlines = [];
 
     if lines is not None:
         print ("Calculated " + str(len(lines)) + " lines")
         for i in range(0, len(lines)):
             rho = lines[i][0][0]
             theta = lines[i][0][1]
+            if math.degrees(theta) < 95 and math.degrees(theta) > 85:
+                nlines.append(lines);
+            else:
+                continue;
             a = math.cos(theta)
             b = math.sin(theta)
             x0 = a * rho
@@ -49,9 +42,9 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
             pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
             pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
             if (outputImg is None):
-                cv.line(centroidImg, pt1, pt2, (0,0,255), 3, cv.LINE_AA)
+                cv.line(centroidImg, pt1, pt2, (255,255,255), 3, cv.LINE_AA)
             else:
-                cv.line(outputImg, pt1, pt2, (0,0,255), 3, cv.LINE_AA)
+                cv.line(outputImg, pt1, pt2, (255,255,255), 3, cv.LINE_AA)
 
     if (outputImg is None):
         plt.imshow(centroidImg)

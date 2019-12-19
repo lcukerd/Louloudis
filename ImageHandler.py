@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 from pylab import rcParams
 import cv2 as cv
 import math
+import numpy as np
 
 def loadImage(fileName):
     src = cv.imread(cv.samples.findFile(fileName), 0)
@@ -9,24 +10,20 @@ def loadImage(fileName):
         print ('Error opening image!')
     return src
 
-def imshow_components(labels):
-    # Map component labels to hue val
-    label_hue = np.uint8(179*labels/np.max(labels))
-    blank_ch = 255*np.ones_like(label_hue)
-    labeled_img = cv.merge([label_hue, blank_ch, blank_ch])
+def showCentroids (image, centroids):
+    demo = np.zeros((np.shape(image)), dtype = np.uint8);
 
-    # cvt to BGR for display
-    labeled_img = cv.cvtColor(labeled_img, cv.COLOR_HSV2BGR)
+    if centroids is not None:
+        for centroid in centroids:
+            if centroid[0] != -1 and centroid[1] != -1:
+                demo[int(centroid[1]), int(centroid[0])] = 255
 
-    # set bg label to black
-    labeled_img[label_hue==0] = 0
-    plt.imshow(labeled_img)
-    plt.show()
+    return demo;
 
 def showLines(lines, DemoImg):
     for line in lines:
-        rho = line[0][0]
-        theta = line[0][1]
+        rho = line[0]
+        theta = line[1]
         a = math.cos(theta)
         b = math.sin(theta)
         x0 = a * rho
