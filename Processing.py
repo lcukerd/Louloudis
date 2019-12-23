@@ -3,7 +3,10 @@ import numpy as np
 import math
 import cv2 as cv
 
-from GeometryProcessing import *
+try:
+    from GeometryProcessing import *
+except ModuleNotFoundError:
+    from Louloudis.GeometryProcessing import *
 
 def divide(centroids, stats, ah):
     centroids1 = [];
@@ -30,7 +33,10 @@ def divide(centroids, stats, ah):
             centroids3.append(centroid);
             stats3.append(stat);
 
-    print ('Found ' + str(len(centroids1)) + " in subset 1, " + str(len(centroids2)) + " in subset 2, and " + str(len(centroids3)) + " in subset 3");
+    try:
+        display ('Found ' + str(len(centroids1)) + " in subset 1, " + str(len(centroids2)) + " in subset 2, and " + str(len(centroids3)) + " in subset 3");
+    except NameError:
+        random = 0;
 
     return ((centroids1, stats1), (centroids2, stats2), (centroids3, stats3));
 

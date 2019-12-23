@@ -13,7 +13,10 @@ def findComponents(image):
     for stat in stats:
         avg_height += stat[cv.CC_STAT_HEIGHT]
     avg_height /= num_labels
-    print ("Found " + str(num_labels) + " components with height " + str(avg_height) + " in image")
+    try:
+        display ("Found " + str(num_labels) + " components with height " + str(avg_height) + " in image");
+    except NameError:
+        random = 0;
 
     return (labels, avg_height, centroids, stats)
 
@@ -27,7 +30,10 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
     nlines = [];
 
     if lines is not None:
-        print ("Calculated " + str(len(lines)) + " lines")
+        try:
+            display ("Calculated " + str(len(lines)) + " lines");
+        except NameError:
+            random = 0;
         for i in range(0, len(lines)):
             rho = lines[i][0][0]
             theta = lines[i][0][1]
@@ -46,11 +52,15 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
             else:
                 cv.line(outputImg, pt1, pt2, (255,255,255), 3, cv.LINE_AA)
 
-    if (outputImg is None):
-        plt.imshow(centroidImg)
-    else:
-        plt.imshow(outputImg)
-    plt.show()
+    try:
+        display ("Showing...");
+        if (outputImg is None):
+            plt.imshow(centroidImg)
+        else:
+            plt.imshow(outputImg)
+            plt.show()
+    except NameError:
+        random = 0;
     return nlines;
 
 
@@ -58,7 +68,10 @@ def houghDomainValidation(lines, centroids, avg_height):
     (rho_, theta_) = findPrimaryCell(lines, centroids)
 
     f_clus = findClustersize(theta_, avg_height)
-    print (f_clus)
+    try:
+        display (f_clus);
+    except NameError:
+        random = 0;
 
     x0 = rho_ - f_clus
     x1 = rho_ + f_clus
@@ -66,10 +79,8 @@ def houghDomainValidation(lines, centroids, avg_height):
     z1 = theta_ + math.radians(3)
 
     clusCells = findcells(x0, x1, z0, z1, lines)
-    print (len(clusCells))
     showLines(clusCells, DemoImg)
     n0 = findValueofcell([(rho_, theta_)], centroids)
-    print (n0)
 
     ntemp = 0
     rho1, theta1 = 0,0

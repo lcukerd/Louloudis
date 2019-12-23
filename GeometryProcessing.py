@@ -1,6 +1,10 @@
 import math
 import numpy as np
-import globalVar
+
+try:
+    import globalVar
+except ModuleNotFoundError:
+    import Louloudis.globalVar as globalVar
 
 from sympy import Point, Polygon
 from sympy.geometry import Segment, Line
