@@ -24,14 +24,20 @@ def performLouloudisSegmentation(file_name):
 
     centroidP, mapP = partitionCC(stats1, int (avg_height));
 
-    lines = findHoughLines(showCentroids(image, centroidP), None, avg_height, 100, 10, 40)
+    lines = [];
+    threshold = 10;
+    while (len(lines) < 4 or len(lines) > 70) and threshold < 500:
+        lines = findHoughLines(showCentroids(image, centroidP), None, avg_height, threshold, 10, 40)
+        threshold += 5;
+    if len(lines) < 4 and len(lines) > 100:
+        return 0;
+
     init(lines, centroidP);
 
     n = 1000;
     selLines = [];
     while (True):
         lineP, pos, n = findPrimaryCell(lines, centroidP);
-        print ("Contribution " + str(n), end= " ");
         if n < 5:
             break;
         elif n < 9:
@@ -39,13 +45,9 @@ def performLouloudisSegmentation(file_name):
             theta = math.radians(lineP[1]);
             if (not (theta <= pTheta + 2 and theta >= pTheta - 2)):
                 continue;
-            print ("Low Contribution " + str(n), end = " ");
 
         centroidPN, count = discardPartition(lineP, np.copy(centroidP), centroids1, mapP)
-
-        print ("Discarded " + str(count) + " centroids", end = '\r');
-
         centroidP = np.copy(centroidPN);
         selLines.append(lineP);
 
-    return len(selLines);
+    return getIntersections(selLines, image);
