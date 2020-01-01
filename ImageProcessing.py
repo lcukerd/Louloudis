@@ -25,7 +25,7 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
     dst = cv.Canny(centroidImg, 50, 200, None, 3)
     cdst = cv.cvtColor(dst, cv.COLOR_GRAY2BGR)
 
-    lines = cv.HoughLines(dst, int(0.2  * height), np.pi / 180, Threshold, None, n, m)
+    lines = cv.HoughLines(dst, int(0.2  * height) if int(0.2  * height) != 0 else 1, np.pi / 180, Threshold, None, n, m)
 
     nlines = [];
 

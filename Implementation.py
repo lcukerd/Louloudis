@@ -29,7 +29,7 @@ def performLouloudisSegmentation(file_name, d):
     while (len(lines) < 4 or len(lines) > 70) and threshold < 500:
         lines = findHoughLines(showCentroids(image, centroidP), None, avg_height, threshold, 10, 40)
         threshold += 5;
-    if len(lines) < 4 and len(lines) > 100:
+    if len(lines) < 4 or len(lines) > 100:
         return 0;
 
     init(lines, centroidP);
@@ -41,7 +41,7 @@ def performLouloudisSegmentation(file_name, d):
         lines[pos] = [(-1, -1)];
         if n < 5:
             break;
-        elif n < 9:
+        elif n < 9 and selLines != []:
             pTheta = math.radians(selLines[0][1]);
             theta = math.radians(lineP[1]);
             if (not (theta <= pTheta + 2 and theta >= pTheta - 2)):
