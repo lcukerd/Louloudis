@@ -52,7 +52,6 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
         plt.imshow(centroidImg)
     else:
         plt.imshow(outputImg)
-        plt.show()
     return nlines;
 
 

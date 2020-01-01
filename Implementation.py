@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     from Louloudis.ImageProcessing import *
     from Louloudis.globalVar import *
 
-def performLouloudisSegmentation(file_name):
+def performLouloudisSegmentation(file_name, d):
     image = loadImage(file_name);
 
     (labels, avg_height, centroids, stats) = findComponents(image);
@@ -37,7 +37,7 @@ def performLouloudisSegmentation(file_name):
     n = 1000;
     selLines = [];
     while (True):
-        lineP, pos, n = findPrimaryCell(lines, centroidP);
+        lineP, pos, n = findPrimaryCell(lines, centroidP, d);
         if n < 5:
             break;
         elif n < 9:
