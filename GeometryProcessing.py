@@ -34,12 +34,10 @@ def findValueofcell(line, centroids, lpos):
 def findbelongCC(line, centroidsP, centroids, mapP):
     x1, x2, y1, y2 = findLine(line[0]-5, line[1]);
     x3, x4, y3, y4 = findLine(line[0]+5, line[1]);
-    vertices = [(x1,y1), (x2,y2), (x4,y4), (x3,y3)];
-    rect = Polygon(vertices[0], vertices[1], vertices[2], vertices[3]);
     value = np.zeros((len(centroids)));
     for i in range(len(centroidsP)):
         centroid = centroidsP[i];
-        if (rect.encloses_point(centroid)):
+        if (encloses([x1, y1], [x2, y2], [x3, y3], [x4, y4], [centroid[0], centroid[1]])):
             value[mapP[i]] += 1;
         else:
             value[mapP[i]] -= 1;
@@ -71,10 +69,26 @@ def findLine(rho, theta):
 
     return x1, x2, y1, y2
 
+def encloses(p1, p2, p3, p4, p5):
+    p1 = np.array(p1);
+    p2 = np.array(p2);
+    p3 = np.array(p3);
+    p4 = np.array(p4);
+    p5 = np.array(p5);
+
+    from1 = np.cross(p2-p1, p1-p5)/np.linalg.norm(p2-p1);
+    from2 = np.cross(p4-p3, p3-p5)/np.linalg.norm(p4-p3);
+
+    if from1 * from2 != abs(from1 * from2):
+        return True;
+    else:
+        return False;
+
 def findDistance(x1, x2, x3, y1, y2, y3):
-    line = Line((x1,y1), (x2,y2))
-    point = Point (x3, y3)
-    return line.distance(point)
+    p1 = np.array([x1,y1])
+    p2 = np.array([x2,y2])
+    p3 = np.array([x3,y3])
+    return np.linalg.norm(np.cross(p2-p1, p1-p3))/np.linalg.norm(p2-p1)
 
 def getLine(line):
     rho = line[0]
