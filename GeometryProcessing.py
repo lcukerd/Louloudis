@@ -64,10 +64,10 @@ def findLine(rho, theta):
     x0 = a * rho
     y0 = b * rho
 
-    x1 = int(x0 + 1000*(-b))
-    y1 = int(y0 + 1000*(a))
-    x2 = int(x0 - 1000*(-b))
-    y2 = int(y0 - 1000*(a))
+    x1 = int(x0 + 10000*(-b))
+    y1 = int(y0 + 10000*(a))
+    x2 = int(x0 - 10000*(-b))
+    y2 = int(y0 - 10000*(a))
 
     return x1, x2, y1, y2
 
@@ -83,8 +83,8 @@ def getLine(line):
     b = math.sin(theta)
     x0 = a * rho
     y0 = b * rho
-    pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
-    pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
+    pt1 = (int(x0 + 10000*(-b)), int(y0 + 10000*(a)))
+    pt2 = (int(x0 - 10000*(-b)), int(y0 - 10000*(a)))
     return Line(pt1, pt2);
 
 def isAdjacent(linei, linej):

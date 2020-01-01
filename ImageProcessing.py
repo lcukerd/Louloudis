@@ -30,10 +30,6 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
     nlines = [];
 
     if lines is not None:
-        try:
-            display ("Calculated " + str(len(lines)) + " lines");
-        except NameError:
-            random = 0;
         for i in range(0, len(lines)):
             rho = lines[i][0][0]
             theta = lines[i][0][1]
@@ -45,22 +41,18 @@ def findHoughLines(centroidImg, outputImg, height, Threshold, n, m):
             b = math.sin(theta)
             x0 = a * rho
             y0 = b * rho
-            pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
-            pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
+            pt1 = (int(x0 + 10000*(-b)), int(y0 + 10000*(a)))
+            pt2 = (int(x0 - 10000*(-b)), int(y0 - 10000*(a)))
             if (outputImg is None):
                 cv.line(centroidImg, pt1, pt2, (255,255,255), 3, cv.LINE_AA)
             else:
                 cv.line(outputImg, pt1, pt2, (255,255,255), 3, cv.LINE_AA)
 
-    try:
-        display ("Showing...");
-        if (outputImg is None):
-            plt.imshow(centroidImg)
-        else:
-            plt.imshow(outputImg)
-            plt.show()
-    except NameError:
-        random = 0;
+    if (outputImg is None):
+        plt.imshow(centroidImg)
+    else:
+        plt.imshow(outputImg)
+        plt.show()
     return nlines;
 
 

@@ -38,7 +38,6 @@ def performLouloudisSegmentation(file_name):
     selLines = [];
     while (True):
         lineP, pos, n = findPrimaryCell(lines, centroidP);
-        print ("Contribution " + str(n));
         if n < 5:
             break;
         elif n < 9:
@@ -46,14 +45,11 @@ def performLouloudisSegmentation(file_name):
             theta = math.radians(lineP[1]);
             if (not (theta <= pTheta + 2 and theta >= pTheta - 2)):
                 continue;
-            print ("Low Contribution " + str(n));
 
         centroidPN, count = discardPartition(lineP, np.copy(centroidP), centroids1, mapP)
 
         if (count == 0):
             break;
-
-        print ("Discarded " + str(count) + " centroids");
 
         centroidP = np.copy(centroidPN);
         selLines.append(lineP);

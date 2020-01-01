@@ -60,7 +60,6 @@ def findPrimaryCell(lines, centroids):
     lineP = (0,0);
     pos = 0;
     for i in range(len(lines)):
-        print ("Checking for line " + str(i + 1) + " of " + str(len(lines)), end = '\r');
         line = lines[i][0]
         ntemp = findValueofcell(line, centroids, i)
         if (ntemp > n):

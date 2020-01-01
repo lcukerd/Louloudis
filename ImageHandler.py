@@ -28,7 +28,7 @@ def showLines(lines, DemoImg):
         b = math.sin(theta)
         x0 = a * rho
         y0 = b * rho
-        pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
-        pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
+        pt1 = (int(x0 + 10000*(-b)), int(y0 + 10000*(a)))
+        pt2 = (int(x0 - 10000*(-b)), int(y0 - 10000*(a)))
         cv.line(DemoImg, pt1, pt2, (0,0,255), 3, cv.LINE_AA)
     plt.imshow(DemoImg);
