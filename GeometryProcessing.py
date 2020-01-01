@@ -51,7 +51,7 @@ def discardPartition(line, centroidsP, centroids, mapP):
     cc = findbelongCC(line, centroidsP, centroids, mapP);
     count = 0;
     for i in range(len(centroidsP)):
-        if mapP[i] in cc and centroidsP[i][0] != 0 and centroidsP[i][1] != 0:
+        if mapP[i] in cc and centroidsP[i][0] != -1 and centroidsP[i][1] != -1:
             centroidsP[i] = (-1,-1);
             count += 1;
     return centroidsP, count

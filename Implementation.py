@@ -37,7 +37,8 @@ def performLouloudisSegmentation(file_name, d):
     n = 1000;
     selLines = [];
     while (True):
-        lineP, pos, n = findPrimaryCell(lines, centroidP, d);
+        lineP, pos, n = findPrimaryCell(lines, centroidP);
+        lines[pos] = [(-1, -1)];
         if n < 5:
             break;
         elif n < 9:
@@ -48,10 +49,8 @@ def performLouloudisSegmentation(file_name, d):
 
         centroidPN, count = discardPartition(lineP, np.copy(centroidP), centroids1, mapP)
 
-        if (count == 0):
-            break;
-
         centroidP = np.copy(centroidPN);
-        selLines.append(lineP);
+        if count != 0:
+            selLines.append(lineP);
 
     return getIntersections(selLines, image);
